@@ -5,14 +5,7 @@ const Visualization = ({ numbers, sortedIndices, comparingIndices }) => {
     return numbers&& numbers.map((num, index) => (
       <div
         key={index}
-        style={{
-          display: 'inline-block',
-          margin: '0 5px',
-          padding: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: comparingIndices.includes(index) ? 'yellow' : sortedIndices.includes(index) ? 'lightgreen' : 'lightgreen',
-        }}
-      >
+        style={{ display: 'inline-block', margin: '0 5px', padding: '5px', border: '1px solid #ccc', backgroundColor: comparingIndices.includes(index) ? 'green' : sortedIndices.includes(index) ? 'orange' : 'orange', }}>
         {num}
       </div>
     ));
