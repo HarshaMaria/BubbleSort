@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Visualization = ({ numbers, sortedIndices }) => {
+const Visualization = ({ numbers, sortedIndices, comparingIndices }) => {
   const renderNumbers = () => {
     return numbers&& numbers.map((num, index) => (
       <div
@@ -10,8 +10,9 @@ const Visualization = ({ numbers, sortedIndices }) => {
           margin: '0 5px',
           padding: '5px',
           border: '1px solid #ccc',
-          backgroundColor: sortedIndices.includes(index) ? 'lightgreen' : 'lightgreen',
-        }} >
+          backgroundColor: comparingIndices.includes(index) ? 'yellow' : sortedIndices.includes(index) ? 'lightgreen' : 'lightgreen',
+        }}
+      >
         {num}
       </div>
     ));
