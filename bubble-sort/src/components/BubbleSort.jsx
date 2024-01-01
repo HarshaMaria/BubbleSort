@@ -1,22 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setInputNumbers,
-  setNumbers,
-  setSortedIndices,
-  setIsSorting,
-  setComparingIndices,
-  setSortOrder,
-} from '../reducers/bubbleSortReducer';
+import { setInputNumbers, setNumbers, setSortedIndices, setIsSorting, setComparingIndices, setSortOrder, } from '../reducers/bubbleSortReducer';
 
 const BubbleSort = () => {
   const dispatch = useDispatch();
   const {
     inputNumbers,
-    numbers,
-    sortedIndices,
     isSorting,
-    comparingIndices,
     sortOrder,
   } = useSelector((state) => state.bubbleSort);
 
