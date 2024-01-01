@@ -1,26 +1,37 @@
-import React, { useState } from 'react';
-import Visualization from './Visualization';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setInputNumbers,
+  setNumbers,
+  setSortedIndices,
+  setIsSorting,
+  setComparingIndices,
+  setSortOrder,
+} from '../reducers/bubbleSortReducer';
 
 const BubbleSort = () => {
-  const [inputNumbers, setInputNumbers] = useState('');
-  const [numbers, setNumbers] = useState([]);
-  const [sortedIndices, setSortedIndices] = useState([]);
-  const [isSorting, setIsSorting] = useState(false);
-  const [comparingIndices, setComparingIndices] = useState([]);
-  const [sortOrder, setSortOrder] = useState('ascending');
+  const dispatch = useDispatch();
+  const {
+    inputNumbers,
+    numbers,
+    sortedIndices,
+    isSorting,
+    comparingIndices,
+    sortOrder,
+  } = useSelector((state) => state.bubbleSort);
 
   const handleInputChange = (event) => {
-    setInputNumbers(event.target.value);
+    dispatch(setInputNumbers(event.target.value));
   };
 
   const handleSortOrderChange = (event) => {
-    setSortOrder(event.target.value);
+    dispatch(setSortOrder(event.target.value));
   };
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const bubbleSort = async () => {
-    setIsSorting(true);
+    dispatch(setIsSorting(true));
     const arr = inputNumbers.split(',').map(Number);
     const indices = [];
     const comparingIndices = [];
@@ -34,21 +45,21 @@ const BubbleSort = () => {
           arr[j + 1] = temp;
         }
         await delay(500);
-        setNumbers([...arr]);
-        setComparingIndices([...comparingIndices]);
+        dispatch(setNumbers([...arr]));
+        dispatch(setComparingIndices([...comparingIndices]));
         comparingIndices.splice(0, comparingIndices.length);
       }
       indices.push(arr.length - 1 - i);
-      setSortedIndices([...indices]);
+      dispatch(setSortedIndices([...indices]));
     }
 
     if (sortOrder === 'ascending') {
-      setNumbers([...arr]); 
+      dispatch(setNumbers([...arr]));
     } else {
-      setNumbers([...arr].reverse()); 
+      dispatch(setNumbers([...arr].reverse()));
     }
 
-    setIsSorting(false);
+    dispatch(setIsSorting(false));
   };
 
   return (
@@ -57,13 +68,30 @@ const BubbleSort = () => {
       <div style={{ marginLeft: '600px' }}>
         <label style={{ marginBottom: '12px', fontSize: '24px' }}>
           Enter Numbers:-
-          <input type="text" value={inputNumbers} onChange={handleInputChange}
-            style={{ marginLeft: '40px', padding: '5px', borderRadius: '3px', border: '1px solid' }} />
+          <input
+            type="text"
+            value={inputNumbers}
+            onChange={handleInputChange}
+            style={{
+              marginLeft: '40px',
+              padding: '5px',
+              borderRadius: '3px',
+              border: '1px solid',
+            }}
+          />
         </label>
-        <label style={{ marginTop: '12px', marginBottom: '12px', fontSize: '24px', display: 'flex'}}>
+        <label style={{ marginTop: '12px', marginBottom: '12px', fontSize: '24px', display: 'flex' }}>
           Sort Order:-
-          <select value={sortOrder} onChange={handleSortOrderChange}
-            style={{ marginLeft: '20px', padding: '5px', borderRadius: '3px', border: '1px solid' }}>
+          <select
+            value={sortOrder}
+            onChange={handleSortOrderChange}
+            style={{
+              marginLeft: '20px',
+              padding: '5px',
+              borderRadius: '3px',
+              border: '1px solid',
+            }}
+          >
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
           </select>
@@ -72,7 +100,6 @@ const BubbleSort = () => {
       <button style={{ marginLeft: '720px', marginTop: '12px' }} onClick={bubbleSort} disabled={isSorting}>
         {isSorting ? 'Sorting...' : 'Sort Numbers'}
       </button>
-      <Visualization numbers={numbers} sortedIndices={sortedIndices} comparingIndices={comparingIndices} />
     </div>
   );
 };
