@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInputNumbers, setNumbers, setSortedIndices, setIsSorting, setComparingIndices, setSortOrder, } from '../reducers/bubbleSortReducer';
+import {
+  setInputNumbers,
+  setNumbers,
+  setSortedIndices,
+  setIsSorting,
+  setComparingIndices,
+  setSortOrder,
+} from '../reducers/bubbleSortReducer';
 
 const BubbleSort = () => {
   const dispatch = useDispatch();
-  const {
-    inputNumbers,
-    isSorting,
-    sortOrder,
-  } = useSelector((state) => state.bubbleSort);
+  const { inputNumbers, isSorting, sortOrder, } = useSelector((state) => state.bubbleSort);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   const handleInputChange = (event) => {
     dispatch(setInputNumbers(event.target.value));
@@ -25,6 +29,8 @@ const BubbleSort = () => {
     const arr = inputNumbers.split(',').map(Number);
     const indices = [];
     const comparingIndices = [];
+
+    const startTime = performance.now();
 
     for (let i = 0; i < arr.length - 1; i++) {
       for (let j = 0; j < arr.length - 1 - i; j++) {
@@ -50,6 +56,9 @@ const BubbleSort = () => {
     }
 
     dispatch(setIsSorting(false));
+
+    const endTime = performance.now();
+    setElapsedTime(endTime - startTime);
   };
 
   return (
@@ -62,26 +71,14 @@ const BubbleSort = () => {
             type="text"
             value={inputNumbers}
             onChange={handleInputChange}
-            style={{
-              marginLeft: '40px',
-              padding: '5px',
-              borderRadius: '3px',
-              border: '1px solid',
-            }}
-          />
+            style={{ marginLeft: '40px', padding: '5px', borderRadius: '3px', border: '1px solid', }} />
         </label>
         <label style={{ marginTop: '12px', marginBottom: '12px', fontSize: '24px', display: 'flex' }}>
           Sort Order:-
           <select
             value={sortOrder}
             onChange={handleSortOrderChange}
-            style={{
-              marginLeft: '20px',
-              padding: '5px',
-              borderRadius: '3px',
-              border: '1px solid',
-            }}
-          >
+            style={{ marginLeft: '20px', padding: '5px', borderRadius: '3px', border: '1px solid', }} >
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
           </select>
@@ -90,6 +87,9 @@ const BubbleSort = () => {
       <button style={{ marginLeft: '720px', marginTop: '12px' }} onClick={bubbleSort} disabled={isSorting}>
         {isSorting ? 'Sorting...' : 'Sort Numbers'}
       </button>
+      <div style={{ marginLeft: '600px', marginTop: '24px', fontSize: '20px' }}>
+        {elapsedTime > 0 && `Elapsed Time: ${elapsedTime.toFixed(2)} milliseconds`}
+      </div>
     </div>
   );
 };
